@@ -2,17 +2,17 @@
 
 ## 🏗 O que fazer?
 
-- Você deve realizar um *fork* deste repositório e, ao finalizar, enviar o link do seu repositório para a nossa equipe. Lembre-se, **NÃO** é necessário criar um *Pull Request* para isso, nós iremos avaliar e retornar por e-mail o resultado do teste.
+- Você deve realizar um *fork* deste repositório e, ao finalizar, enviar o link do seu repositório para a nossa equipe. Lembre-se, **NÃO** é necessário criar um *Pull Request* para isso, nós iremos avaliar e retornar por e-mail o resultado do teste
 
 # 🚨 Requisitos
 
-- A API deve ser construída em Java (8 ou superior) utilizando Spring Framework (2.2 ou superior).
-- Implementar autenticação seguindo o padrão ***JWT***, lembrando que o token a ser recebido deve estar no formado ***Bearer***.
-- Implementar operações no banco de dados utilizando ***Spring Data JPA*** & ***Hibernate***.
+- A API deve ser construída em Java (8 ou superior) utilizando Spring Framework (2.2 ou superior)
+- Implementar autenticação seguindo o padrão ***JWT***, lembrando que o token a ser recebido deve estar no formado ***Bearer***
+- Implementar operações no banco de dados utilizando ***Spring Data JPA*** & ***Hibernate***
 - **Bancos relacionais permitidos**
     - *MySQL* (prioritariamente)
     - *PostgreSQL*
-- As entidades deversão ser criadas como tabelas utilizando a ferramenta de migração **Flyway**. Portanto, os scripts de **migrations** para geração das tabelas devem ser enviados no teste.
+- As entidades deversão ser criadas como tabelas utilizando a ferramenta de migração **Flyway**. Portanto, os scripts de **migrations** para geração das tabelas devem ser enviados no teste
 - Sua API deverá seguir os padrões REST na construção das rotas e retornos
 - Sua API deverá conter documentação viva utilizando a *OpenAPI Specification* (**Swagger**)
 - Caso haja alguma particularidade de implementação, instruções para execução do projeto deverão ser enviadas
@@ -28,7 +28,7 @@
 
 - Estrutura do projeto
 - Utilização de código limpo e princípios **SOLID**
-- Segurança da API, como autenticação, senhas salvas no banco, *SQL Injection* e outros.
+- Segurança da API, como autenticação, senhas salvas no banco, *SQL Injection* e outros
 - Boas práticas da Linguagem/Framework
 - Seu projeto deverá seguir tudo o que foi exigido na seção  [O que desenvolver?](##--o-que-desenvolver)
 
