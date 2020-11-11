@@ -10,8 +10,8 @@
 - Implementar autenticação seguindo o padrão ***JWT***, lembrando que o token a ser recebido deve estar no formado ***Bearer***.
 - Implementar operações no banco de dados utilizando ***Spring Data JPA*** & ***Hibernate***.
 - **Bancos relacionais permitidos**
-  - *MySQL* (prioritariamente)
-  - *PostgreSQL*
+    - *MySQL* (prioritariamente)
+    - *PostgreSQL*
 - As entidades deversão ser criadas como tabelas utilizando a ferramenta de migração **Flyway**. Portanto, os scripts de **migrations** para geração das tabelas devem ser enviados no teste.
 - Sua API deverá seguir os padrões REST na construção das rotas e retornos
 - Sua API deverá conter documentação viva utilizando a *OpenAPI Specification* (**Swagger**)
