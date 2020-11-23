@@ -1,54 +1,63 @@
-# README
+# Desafio Pessoa Desenvolvedora Java
 
-Estes documento README tem como objetivo fornecer as informações necessárias para realização do projeto Empresas.
+## 🏗 O que fazer?
 
-### O QUE FAZER ?
+- Você deve realizar um *fork* deste repositório e, ao finalizar, enviar o link do seu repositório para a nossa equipe. Lembre-se, **NÃO** é necessário criar um *Pull Request* para isso, nós iremos avaliar e retornar por e-mail o resultado do teste
 
-- Você deve realizar um fork deste repositório e, ao finalizar, enviar o link do seu repositório para a nossa equipe. Lembre-se, NÃO é necessário criar um Pull Request para isso, nós iremos avaliar e retornar por email o resultado do seu teste.
+# 🚨 Requisitos
 
-### ESCOPO DO PROJETO
+- A API deve ser construída em Java (8 ou superior) utilizando Spring Framework (2.2 ou superior)
+- Implementar autenticação seguindo o padrão ***JWT***, lembrando que o token a ser recebido deve estar no formado ***Bearer***
+- Implementar operações no banco de dados utilizando ***Spring Data JPA*** & ***Hibernate***
+- **Bancos relacionais permitidos**
+    - *MySQL* (prioritariamente)
+    - *PostgreSQL*
+- As entidades deversão ser criadas como tabelas utilizando a ferramenta de migração **Flyway**. Portanto, os scripts de **migrations** para geração das tabelas devem ser enviados no teste
+- Sua API deverá seguir os padrões REST na construção das rotas e retornos
+- Sua API deverá conter documentação viva utilizando a *OpenAPI Specification* (**Swagger**)
+- Caso haja alguma particularidade de implementação, instruções para execução do projeto deverão ser enviadas
 
-- Deve ser criada uma API em **Java**.
-- A API deve fazer o seguinte:
+# 🎁 Extra
 
-1. Login e acesso de Usuário já registrado;
-2. Para o login usamos padrões **JWT** ou **OAuth 2.0**;
-3. Listagem de Empresas
-4. Detalhamento de Empresas
-5. Filtro de Empresas por nome e tipo
+- Testes unitários
+- Teste de integração da API em linguagem de sua preferência (damos importância para pirâmide de testes)
+- Cobertura de testes utilizando Sonarqube
+- Utilização de *Docker* (enviar todos os arquivos e instruções necessárias para execução do projeto)
 
-### Informações Importantes
+# 🕵🏻‍♂️ Itens a serem avaliados
 
-- A API deve funcionar exatamente da mesma forma que a disponibilizada na collection do postman, mais abaixo os acessos a API estarão disponíveis em nosso servidor.
+- Estrutura do projeto
+- Utilização de código limpo e princípios **SOLID**
+- Segurança da API, como autenticação, senhas salvas no banco, *SQL Injection* e outros
+- Boas práticas da Linguagem/Framework
+- Seu projeto deverá seguir tudo o que foi exigido na seção  [O que desenvolver?](##--o-que-desenvolver)
 
-  - Para o login usamos padrões OAuth 2.0. Na resposta de sucesso do login a api retornará 3 custom headers (access-token, client, uid);
+# 🖥 O que desenvolver?
 
-  - Para ter acesso as demais APIS precisamos enviar esses 3 custom headers para a API autorizar a requisição;
+Você deverá criar uma API que o site [IMDb](https://www.imdb.com/) irá consultar para exibir seu conteúdo, sua API deverá conter as seguintes funcionalidades:
 
-- Mantenha a mesma estrutura do postman em sua API, ou seja, ela deve ter os mesmo atributos, respostas, rotas e tratamentos, funcionando igual ao nosso exemplo.
+- Administrador
+    - Cadastro
+    - Edição
+    - Exclusão lógica (desativação)
+    - Listagem de usuários não administradores ativos
+        - Opção de trazer registros paginados
+        - Retornar usuários por ordem alfabética
+- Usuário
+    - Cadastro
+    - Edição
+    - Exclusão lógica (desativação)
+- Filmes
+    - Cadastro (somente um usuário administrador poderá realizar esse cadastro)
+    - Voto (a contagem de votos será feita por usuário de 0-4 que indica quanto o usuário gostou do filme)
+    - Listagem
+        - Opção de filtros por diretor, nome, gênero e/ou atores
+        - Opção de trazer registros paginados
+        - Retornar a lista ordenada por filmes mais votados e por ordem alfabética
+    - Detalhes do filme trazendo todas as informações sobre o filme, inclusive a média dos votos
 
-- Quando seu código for finalizado e disponibilizado para validarmos, vamos subir em nosso servidor e realizar a integração com o app.
+**Obs.:** 
 
-- Independente de onde conseguiu chegar no teste é importante disponibilizar seu fonte para analisarmos.
+**Apenas os usuários poderão votar nos filmes e a API deverá validar quem é o usuário que está acessando, ou seja, se é um usuário administrador ou não.**
 
-- É obrigatório utilização de Banco de Dados MySql/PostgreSQL
-
-### Dados para Teste
-
-- Servidor: https://empresas.ioasys.com.br/
-- Versão da API: v1
-- Usuário de Teste: testeapple@ioasys.com.br
-- Senha de Teste : 12341234
-
-### Dicas
-
-- Documentação JWT https://jwt.io/
-- Documentação OAuth 2.0 https://oauth.net/2/
-- Frameworks Java
-
-  1. https://spring.io/
-
-- Persistência
-
-1. Hibernate – http://www.hibernate.org/
-2. Spring Data – https://spring.io/projects/spring-data
+**Caso não consiga concluir todos os itens propostos, é importante que nos envie a implementação até onde foi possível para que possamos avaliar**
