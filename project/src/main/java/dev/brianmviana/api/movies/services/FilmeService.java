@@ -27,6 +27,9 @@ public class FilmeService {
 			filme.add(linkTo(methodOn(FilmeResource.class).getFilme(id)).withSelfRel());
 			filmes.add(filme);
 		}
+		
+		filmes.sort(new Filme());
+
 		return filmes;
 	}
 	

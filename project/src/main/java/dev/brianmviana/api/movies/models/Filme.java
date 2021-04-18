@@ -1,6 +1,7 @@
 	package dev.brianmviana.api.movies.models;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-public class Filme extends RepresentationModel<Filme> {
+public class Filme extends RepresentationModel<Filme> implements Comparator<Filme>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -150,6 +151,12 @@ public class Filme extends RepresentationModel<Filme> {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compare(Filme filme1, Filme filme2) {
+		return  filme1.getNome().compareTo(filme2.getNome());
+	}
+
 	
 	
 }

@@ -1,7 +1,9 @@
 package dev.brianmviana.api.movies.models;
 
+import java.util.Comparator;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-public class Usuario {
+public class Usuario extends RepresentationModel<Usuario>  implements Comparator<Usuario> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +27,17 @@ public class Usuario {
 	private String nome;
 	
 	@NotNull
+	@Column(unique = true)	
 	private String login;
 	
 	@NotNull
 	private String senha;
 	
 	@NotNull
-	private ROLE role;
+	private Boolean isAdmin;
+	
+	@NotNull
+	private Boolean status;
 	
 	@OneToMany(mappedBy="filme")
 	private Set<Voto> votos;
@@ -62,14 +73,6 @@ public class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-
-	public ROLE getRole() {
-		return role;
-	}
-
-	public void setRole(ROLE role) {
-		this.role = role;
-	}
 	
 	public Set<Voto> getVotos() {
 		return votos;
@@ -79,13 +82,30 @@ public class Usuario {
 		this.votos = votos;
 	}
 
+
+	public Boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((isAdmin == null) ? 0 : isAdmin.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		return result;
 	}
@@ -109,7 +129,7 @@ public class Usuario {
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		if (role != other.role)
+		if (isAdmin != other.isAdmin)
 			return false;
 		if (senha == null) {
 			if (other.senha != null)
@@ -118,4 +138,10 @@ public class Usuario {
 			return false;
 		return true;
 	}
+
+	@Override
+	public int compare(Usuario user1, Usuario user2) {
+		return  user1.getNome().compareTo(user2.getNome());
+	}
+
 }
