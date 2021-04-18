@@ -1,14 +1,18 @@
 	package dev.brianmviana.api.movies.models;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.istack.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -27,14 +31,17 @@ public class Filme extends RepresentationModel<Filme> {
 	@NotNull
 	private String genero;
 	
-//	@NotNull
-//	private ArrayList<String> atores;
+	@NotNull
+	private String ano;
 	
 	@NotNull
-	private int qtdVotos;
+	private ArrayList<String> atores;
 	
 	@NotNull
 	private Boolean status;
+	
+	@OneToMany(mappedBy="filme")
+	private Set<Voto> votos;
 	
 	public Long getId() {
 		return id;
@@ -68,40 +75,47 @@ public class Filme extends RepresentationModel<Filme> {
 		this.genero = genero;
 	}
 	
-//	public ArrayList<String> getAtores() {
-//		return atores;
-//	}
-//	
-//	public void setAtores(ArrayList<String> atores) {
-//		this.atores = atores;
-//	}
-	
-	public int getQtdVotos() {
-		return qtdVotos;
+	public String getAno() {
+		return ano;
 	}
 	
-	public void setQtdVotos(int qtdVotos) {
-		this.qtdVotos = qtdVotos;
+	public void setAno(String ano) {
+		this.ano = ano;
+	}
+	
+	public ArrayList<String> getAtores() {
+		return atores;
+	}
+	
+	public void setAtores(ArrayList<String> atores) {
+		this.atores = atores;
 	}
 	
 	public boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
+	}	
+	
+	public Set<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(Set<Voto> votos) {
+		this.votos = votos;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-//		result = prime * result + ((atores == null) ? 0 : atores.hashCode());
+		result = prime * result + ((atores == null) ? 0 : atores.hashCode());
 		result = prime * result + ((diretor == null) ? 0 : diretor.hashCode());
 		result = prime * result + ((genero == null) ? 0 : genero.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + qtdVotos;
 		return result;
 	}
 
@@ -114,11 +128,11 @@ public class Filme extends RepresentationModel<Filme> {
 		if (getClass() != obj.getClass())
 			return false;
 		Filme other = (Filme) obj;
-//		if (atores == null) {
-//			if (other.atores != null)
-//				return false;
-//		} else if (!atores.equals(other.atores))
-//			return false;
+		if (atores == null) {
+			if (other.atores != null)
+				return false;
+		} else if (!atores.equals(other.atores))
+			return false;
 		if (diretor == null) {
 			if (other.diretor != null)
 				return false;
@@ -133,8 +147,6 @@ public class Filme extends RepresentationModel<Filme> {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
-			return false;
-		if (qtdVotos != other.qtdVotos)
 			return false;
 		return true;
 	}

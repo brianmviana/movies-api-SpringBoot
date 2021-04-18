@@ -18,5 +18,5 @@ public class HateoasConfiguration {
 	    List<LinkDiscoverer> plugins = new ArrayList<>();
 	    plugins.add(new CollectionJsonLinkDiscoverer());
 	    return new LinkDiscoverers(SimplePluginRegistry.create(plugins)); 
-	} 
+	}
 }

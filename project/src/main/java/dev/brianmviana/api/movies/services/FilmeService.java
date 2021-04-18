@@ -1,10 +1,10 @@
 package dev.brianmviana.api.movies.services;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class FilmeService {
 	private FilmeRepository filmeRepository;
 
 	public List<Filme> getAllFilmes(){
-		Iterable<Filme> filmeslist = filmeRepository.findAll();
+		List<Filme> filmeslist = filmeRepository.findAll();
 		ArrayList<Filme> filmes = new ArrayList<Filme>();
 		for (Filme filme : filmeslist) {
 			long id = filme.getId();
@@ -32,12 +32,18 @@ public class FilmeService {
 	
 	public Filme getFilmeById(long id) {
 		Filme filme = filmeRepository.findById(id);
-		filme.add(linkTo(methodOn(FilmeResource.class).listFilme()).withRel("Filmes list"));
+		filme.add(linkTo(methodOn(FilmeResource.class).getAllFilme()).withRel("Lista de Filmes"));
 		return filme;
 	}
 	
 	public Filme saveFilme(Filme filme) {
-		return filmeRepository.save(filme);
+		List<Filme> filmeExist = filmeRepository.findByNome(filme.getNome());
+		if (!filmeExist.isEmpty()) {
+			filme = filmeExist.get(0);
+		}
+		filmeRepository.save(filme);
+		filme.add(linkTo(methodOn(FilmeResource.class).getAllFilme()).withRel("Lista de Filmes"));
+		return filme;
 	}
 	
 	public Filme deleteFilme(Filme filme) {

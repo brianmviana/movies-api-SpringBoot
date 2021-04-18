@@ -1,4 +1,4 @@
-package dev.brianmviana.api.movies.resouces;
+	package dev.brianmviana.api.movies.resouces;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class FilmeResource {
 	
 	@ApiOperation(value="Retorna uma lista de filmes")
 	@GetMapping(produces="application/json")
-	public @ResponseBody List<Filme> listFilme() {
+	public @ResponseBody List<Filme> getAllFilme() {
 		return filmeService.getAllFilmes();
 	}
 	
@@ -50,7 +50,4 @@ public class FilmeResource {
 	public Filme deleteFilme(Filme filme) {
 		return filmeService.deleteFilme(filme);
 	}
-	
-	
-	
 }
