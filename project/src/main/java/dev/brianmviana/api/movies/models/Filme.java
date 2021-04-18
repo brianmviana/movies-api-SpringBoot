@@ -33,6 +33,9 @@ public class Filme extends RepresentationModel<Filme> {
 	@NotNull
 	private int qtdVotos;
 	
+	@NotNull
+	private Boolean status;
+	
 	public Long getId() {
 		return id;
 	}
@@ -80,6 +83,14 @@ public class Filme extends RepresentationModel<Filme> {
 	public void setQtdVotos(int qtdVotos) {
 		this.qtdVotos = qtdVotos;
 	}
+	
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 	@Override
 	public int hashCode() {
@@ -89,6 +100,7 @@ public class Filme extends RepresentationModel<Filme> {
 		result = prime * result + ((diretor == null) ? 0 : diretor.hashCode());
 		result = prime * result + ((genero == null) ? 0 : genero.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + qtdVotos;
 		return result;
 	}

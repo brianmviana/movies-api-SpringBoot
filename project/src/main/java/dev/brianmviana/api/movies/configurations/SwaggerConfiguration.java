@@ -36,7 +36,7 @@ public class SwaggerConfiguration {
                 "API rest de Filmes",
                 "1.0",
                 "Terms of Service",
-                new Contact("brianmviana", "https://www.brianmviana.dev",
+                new Contact("Brian M. Viana", "https://www.brianmviana.dev",
                         "brianmviana@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licesen.html",
