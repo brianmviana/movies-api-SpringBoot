@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-//import javax.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +46,7 @@ public class FilmeResource {
 	}
 
 	@PostMapping
-	public Filme saveFilme(@RequestBody  Filme filme) { //TODO @Valid
+	public Filme saveFilme(@RequestBody @Valid Filme filme) { //TODO
 		return filmeRepository.save(filme);
 	}
 

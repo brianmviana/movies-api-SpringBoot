@@ -1,5 +1,6 @@
-package dev.brianmviana.api.movies.models;
+	package dev.brianmviana.api.movies.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -29,8 +30,8 @@ public class Filme extends RepresentationModel<Filme> {
 	@NotNull
 	private String genero;
 	
-	@NotNull
-	private List<String> atores;
+//	@NotNull
+//	private ArrayList<String> atores;
 	
 	@NotNull
 	private int qtdVotos;
@@ -67,13 +68,13 @@ public class Filme extends RepresentationModel<Filme> {
 		this.genero = genero;
 	}
 	
-	public List<String> getAtores() {
-		return atores;
-	}
-	
-	public void setAtores(List<String> atores) {
-		this.atores = atores;
-	}
+//	public ArrayList<String> getAtores() {
+//		return atores;
+//	}
+//	
+//	public void setAtores(ArrayList<String> atores) {
+//		this.atores = atores;
+//	}
 	
 	public int getQtdVotos() {
 		return qtdVotos;
@@ -87,7 +88,7 @@ public class Filme extends RepresentationModel<Filme> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((atores == null) ? 0 : atores.hashCode());
+//		result = prime * result + ((atores == null) ? 0 : atores.hashCode());
 		result = prime * result + ((diretor == null) ? 0 : diretor.hashCode());
 		result = prime * result + ((genero == null) ? 0 : genero.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
@@ -104,11 +105,11 @@ public class Filme extends RepresentationModel<Filme> {
 		if (getClass() != obj.getClass())
 			return false;
 		Filme other = (Filme) obj;
-		if (atores == null) {
-			if (other.atores != null)
-				return false;
-		} else if (!atores.equals(other.atores))
-			return false;
+//		if (atores == null) {
+//			if (other.atores != null)
+//				return false;
+//		} else if (!atores.equals(other.atores))
+//			return false;
 		if (diretor == null) {
 			if (other.diretor != null)
 				return false;
