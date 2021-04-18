@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.brianmviana.api.movies.models.Filme;
 import dev.brianmviana.api.movies.repositories.FilmeRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value="API rest de Filmes")
 @RestController
 @RequestMapping("/filmes")
 public class FilmeResource {
@@ -26,6 +29,7 @@ public class FilmeResource {
 	@Autowired
 	private FilmeRepository filmeRepository;
 	
+	@ApiOperation(value="Retorna uma lista de filmes")
 	@GetMapping(produces="application/json")
 	public @ResponseBody ArrayList<Filme> listFilme() {
 		Iterable<Filme> filmeslist = filmeRepository.findAll();
@@ -38,6 +42,7 @@ public class FilmeResource {
 		return filmes;
 	}
 	
+	@ApiOperation(value="Retorna um filme")
 	@GetMapping(value = "/{id}",produces = "application/json")
 	public @ResponseBody Filme getFilme(@PathVariable(value = "id") long id) {
 		Filme filme = filmeRepository.findById(id);
@@ -45,11 +50,13 @@ public class FilmeResource {
 		return filme;
 	}
 
+	@ApiOperation(value="Cria um novo filme")
 	@PostMapping
 	public Filme saveFilme(@RequestBody @Valid Filme filme) { //TODO
 		return filmeRepository.save(filme);
 	}
 
+	@ApiOperation(value="Deleta um filme")
 	@DeleteMapping
 	public Filme deleteFilme(@RequestBody Filme filme) {
 		filmeRepository.delete(filme);
