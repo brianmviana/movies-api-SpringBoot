@@ -4,36 +4,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Voto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
-	@NotNull	
-	private Integer nota;
+	private Long id;
 
 	@NotNull
-	@OneToOne
-    @JoinColumn(name="usuario_id", nullable=false)
-	private Usuario usuario;
+	private Integer nota;
+
+//	@NotNull
+//	@OneToOne
+//	private Usuario usuario;
 
 	@NotNull
 	@ManyToOne
-    @JoinColumn(name="filme_id", nullable=false)
 	private Filme filme;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -45,13 +45,13 @@ public class Voto {
 		this.nota = nota;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+//	public Usuario getUsuario() {
+//		return usuario;
+//	}
+//
+//	public void setUsuario(Usuario usuario) {
+//		this.usuario = usuario;
+//	}
 
 	public Filme getFilme() {
 		return filme;

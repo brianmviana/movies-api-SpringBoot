@@ -31,7 +31,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo metaInfo() {
 
-        ApiInfo apiInfo = new ApiInfo(
+        @SuppressWarnings("rawtypes")
+		ApiInfo apiInfo = new ApiInfo(
                 "API Rest de filmes",
                 "API rest de Filmes",
                 "1.0",

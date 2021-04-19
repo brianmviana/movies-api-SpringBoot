@@ -23,8 +23,7 @@ public class FilmeService {
 		List<Filme> filmeslist = filmeRepository.findAll();
 		ArrayList<Filme> filmes = new ArrayList<Filme>();
 		for (Filme filme : filmeslist) {
-			long id = filme.getId();
-			filme.add(linkTo(methodOn(FilmeResource.class).getFilme(id)).withSelfRel());
+			filme.add(linkTo(methodOn(FilmeResource.class).getFilme(filme.getId())).withSelfRel());
 			filmes.add(filme);
 		}
 		
@@ -33,8 +32,8 @@ public class FilmeService {
 		return filmes;
 	}
 	
-	public Filme getFilmeById(long id) {
-		Filme filme = filmeRepository.findById(id);
+	public Filme getFilmeById(Long id) {
+		Filme filme = filmeRepository.getOne(id);
 		filme.add(linkTo(methodOn(FilmeResource.class).getAllFilme()).withRel("Lista de Filmes"));
 		return filme;
 	}

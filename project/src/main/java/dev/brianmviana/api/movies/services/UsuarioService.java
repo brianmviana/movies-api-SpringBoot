@@ -1,9 +1,6 @@
 package dev.brianmviana.api.movies.services;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Usuario;
-import dev.brianmviana.api.movies.models.Voto;
 import dev.brianmviana.api.movies.repositories.UsuarioRepository;
 
 @Service
@@ -21,10 +17,10 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 	public List<Usuario> getAllUsuarios(){
-		List<Usuario> usuarios = usuarioRepository.findAll();
+		Iterable<Usuario> usuarios = usuarioRepository.findAll();
 		List<Usuario> usuariosAtivos = new ArrayList<Usuario>();
 		for (Usuario usuario : usuarios) {
-			if(usuario.getStatus() && !usuario.isAdmin()) {
+			if(usuario.getStatus()) { //TODO usuario is Admin()
 				usuario = hiddenPassword(usuario);
 				usuariosAtivos.add(usuario);
 			}
@@ -34,8 +30,8 @@ public class UsuarioService {
 		return usuariosAtivos;
 	}
 	
-	public ResponseEntity<Usuario> getUsuarioById(long id) {
-		Usuario usuario = usuarioRepository.findById(id);
+	public ResponseEntity<Usuario> getUsuarioByLogin(String login) {
+		Usuario usuario = usuarioRepository.findByLogin(login);
 		if(usuario != null && usuario.getStatus()) {
 			usuario = hiddenPassword(usuario);
 			return ResponseEntity.ok(usuario);
@@ -51,9 +47,9 @@ public class UsuarioService {
 		}
 		
 		// cria uma lista vazia caso o usuario não tenha nenhum voto
-		if(usuario.getVotos() == null) {
-			usuario.setVotos(new HashSet<Voto>());
-		}
+//		if(usuario.getVotos() == null) {
+//			usuario.setVotos(new HashSet<Voto>());
+//		}
 		usuario = usuarioRepository.save(usuario);
 		usuario = hiddenPassword(usuario);
 		return usuario;
@@ -61,22 +57,22 @@ public class UsuarioService {
 	
 	
 	public Usuario updateUsuario(Usuario usuario) {
-		return updateUsuario(usuario.getId(), usuario);
+		return updateUsuario(usuario.getLogin(), usuario);
 	}
 
-	public Usuario updateUsuario(long id, Usuario usuario) {
-		Usuario usuarioExist = usuarioRepository.findById(id);
+	public Usuario updateUsuario(String login, Usuario usuario) {
+		Usuario usuarioExist = usuarioRepository.findByLogin(login);
 		Usuario usuarioLoginExist = usuarioRepository.findByLogin(usuario.getLogin());
 		if (usuarioExist == null) {
 			// TODO return Response
 			return null;
 		}
-		if(usuarioExist.getId() != usuarioLoginExist.getId()) {
+		if((usuarioLoginExist != null) && usuarioExist.getLogin() != usuarioLoginExist.getLogin()) {
 			// TODO return Response
 			return null;
 		}
 
-		usuario.setId(usuarioExist.getId());
+		usuario.setLogin(usuarioExist.getLogin());
 		usuario = usuarioRepository.save(usuario);
 		usuario = hiddenPassword(usuario);
 		return usuario;

@@ -26,7 +26,7 @@ public class FilmeResource {
 
 	@Autowired
 	private FilmeService filmeService;
-	
+		
 	@ApiOperation(value="Retorna uma lista de filmes")
 	@GetMapping(produces="application/json")
 	public @ResponseBody List<Filme> getAllFilme() {
@@ -35,7 +35,7 @@ public class FilmeResource {
 	
 	@ApiOperation(value="Retorna um filme")
 	@GetMapping(value = "/{id}",produces = "application/json")
-	public @ResponseBody Filme getFilme(@PathVariable(value = "id") long id) {
+	public @ResponseBody Filme getFilme(@PathVariable(value = "id") Long id) {
 		return filmeService.getFilmeById(id);
 	}
 

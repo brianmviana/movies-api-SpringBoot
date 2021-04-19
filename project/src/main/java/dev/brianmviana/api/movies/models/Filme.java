@@ -2,7 +2,7 @@
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +15,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Filme extends RepresentationModel<Filme> implements Comparator<Filme>{
 
@@ -41,8 +42,8 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private Boolean status;
 	
-	@OneToMany(mappedBy="filme")
-	private Set<Voto> votos;
+	@OneToMany
+	private List<Voto> votos;
 	
 	public Long getId() {
 		return id;
@@ -100,11 +101,11 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 		this.status = status;
 	}	
 	
-	public Set<Voto> getVotos() {
+	public List<Voto> getVotos() {
 		return votos;
 	}
 
-	public void setVotos(Set<Voto> votos) {
+	public void setVotos(List<Voto> votos) {
 		this.votos = votos;
 	}
 

@@ -36,9 +36,9 @@ public class UsuarioResource {
 	}
 	
 	@ApiOperation(value="Retorna um usuario")
-	@GetMapping(value = "/{id}",produces = "application/json")
-	public @ResponseBody ResponseEntity<Usuario> getUsuario(@PathVariable(value = "id") long id) {
-		return usuarioService.getUsuarioById(id);
+	@GetMapping(value = "/{login}",produces = "application/json")
+	public @ResponseBody ResponseEntity<Usuario> getUsuario(@PathVariable(value = "login") String login) {
+		return usuarioService.getUsuarioByLogin(login);
 	}
 
 	@ApiOperation(value="Cria um novo usuario")
@@ -56,9 +56,9 @@ public class UsuarioResource {
 	}
 
 	@ApiOperation(value="Atualiza um novo usuario")
-	@PutMapping(value = "/{id}",produces = "application/json")
-	public Usuario updateUsuario(@PathVariable(value = "id") long id, @RequestBody @Valid Usuario usuario) {
-		Usuario user = usuarioService.updateUsuario(id, usuario);
+	@PutMapping(value = "/{login}",produces = "application/json")
+	public Usuario updateUsuario(@PathVariable(value = "login") String login, @RequestBody @Valid Usuario usuario) {
+		Usuario user = usuarioService.updateUsuario(login, usuario);
 		return user;
 	}
 
