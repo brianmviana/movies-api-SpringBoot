@@ -1,6 +1,5 @@
 	package dev.brianmviana.api.movies.models;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -9,6 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -38,7 +40,12 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	private String ano;
 	
 	@NotNull
-	private ArrayList<String> atores;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable( 
+	        name = "filme_ator", 
+	        joinColumns = @JoinColumn(name = "filme_id", referencedColumnName = "id"), 
+        	inverseJoinColumns = @JoinColumn(name = "ator_id", referencedColumnName = "id"))
+	private List<Atores> atores;
 	
 	@NotNull
 	private Boolean status;
@@ -86,11 +93,11 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 		this.ano = ano;
 	}
 	
-	public ArrayList<String> getAtores() {
+	public List<Atores> getAtores() {
 		return atores;
 	}
 	
-	public void setAtores(ArrayList<String> atores) {
+	public void setAtores(List<Atores> atores) {
 		this.atores = atores;
 	}
 	
@@ -159,6 +166,4 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 		return  filme1.getNome().compareTo(filme2.getNome());
 	}
 
-	
-	
 }

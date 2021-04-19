@@ -43,7 +43,7 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 	@JoinTable( 
 	        name = "usuarios_roles", 
 	        joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "login"), 
-        	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))	
+        	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))
 	private List<Role> roles;
 
 	public String getLogin() {
