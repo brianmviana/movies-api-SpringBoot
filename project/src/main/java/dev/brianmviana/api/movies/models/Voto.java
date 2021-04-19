@@ -1,11 +1,11 @@
 package dev.brianmviana.api.movies.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,11 +22,11 @@ public class Voto {
 	private Integer nota;
 
 //	@NotNull
-//	@OneToOne
+//	@OneToOne(fetch = FetchType.LAZY)
 //	private Usuario usuario;
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Filme filme;
 
 	public Long getId() {

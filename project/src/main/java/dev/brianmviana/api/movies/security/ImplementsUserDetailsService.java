@@ -1,5 +1,7 @@
 package dev.brianmviana.api.movies.security;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -20,11 +22,9 @@ public class ImplementsUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepository.findByLogin(login);
-		
-		if(usuario == null){
-			throw new UsernameNotFoundException("Usuario não encontrado!");
-		}
+		Optional<Usuario> usuarioOptional = usuarioRepository.findByLogin(login);
+		Usuario usuario = usuarioOptional.orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado!"));
 		return new User(usuario.getLogin(), usuario.getSenha(), true, true, true, true, usuario.getAuthorities());
 	}
+	
 }

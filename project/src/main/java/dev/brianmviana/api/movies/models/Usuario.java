@@ -5,13 +5,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,17 +33,17 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 	@NotNull
 	private String nome;
 	
-	@NotEmpty
+	@NotBlank
 	private String senha;
 	
 	@NotNull
 	private Boolean status;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( 
 	        name = "usuarios_roles", 
 	        joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "login"), 
-        	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))
+        	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))	
 	private List<Role> roles;
 
 	public String getLogin() {
@@ -90,33 +91,23 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!super.equals(obj)) {
-				return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (!super.equals(obj))
 			return false;
-		}
-		
+		if (getClass() != obj.getClass())
+			return false;
 		Usuario other = (Usuario) obj;
-		
 		if (login == null) {
-			if (other.login != null) {
+			if (other.login != null)
 				return false;
-			}
-		} 
-		else if (!login.equals(other.login)) {
+		} else if (!login.equals(other.login))
 			return false;
-		}
 		return true;
 	}
 

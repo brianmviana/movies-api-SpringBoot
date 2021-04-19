@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,18 +32,21 @@ public class UsuarioResource {
 	
 	@ApiOperation(value="Retorna uma lista de usuarios")
 	@GetMapping(produces="application/json")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody List<Usuario> getAllUsuario() {
 		return usuarioService.getAllUsuarios();
 	}
 	
 	@ApiOperation(value="Retorna um usuario")
 	@GetMapping(value = "/{login}",produces = "application/json")
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody ResponseEntity<Usuario> getUsuario(@PathVariable(value = "login") String login) {
 		return usuarioService.getUsuarioByLogin(login);
 	}
 
 	@ApiOperation(value="Cria um novo usuario")
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Usuario saveUsuario(@RequestBody @Valid Usuario usuario) {
 		Usuario user = usuarioService.saveUsuario(usuario);
 		return user;
@@ -50,6 +54,7 @@ public class UsuarioResource {
 
 	@ApiOperation(value="Atualiza um novo usuario")
 	@PutMapping
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Usuario updateUsuario(@RequestBody @Valid Usuario usuario) {
 		Usuario user = usuarioService.updateUsuario(usuario);
 		return user;
@@ -64,6 +69,7 @@ public class UsuarioResource {
 
 	@ApiOperation(value="Deleta um usuario")
 	@DeleteMapping
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	public Usuario deleteUsuario(Usuario usuario) {
 		return usuarioService.deleteUsuario(usuario);
 	}

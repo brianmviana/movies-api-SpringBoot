@@ -2,6 +2,7 @@ package dev.brianmviana.api.movies.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,8 @@ public class UsuarioService {
 	}
 	
 	public ResponseEntity<Usuario> getUsuarioByLogin(String login) {
-		Usuario usuario = usuarioRepository.findByLogin(login);
+		Optional<Usuario> user = usuarioRepository.findByLogin(login);
+		Usuario usuario = user.get();
 		if(usuario != null && usuario.getStatus()) {
 			usuario = hiddenPassword(usuario);
 			return ResponseEntity.ok(usuario);
@@ -41,7 +43,8 @@ public class UsuarioService {
 	}
 	
 	public Usuario saveUsuario(Usuario usuario) {
-		Usuario usuarioExist = usuarioRepository.findByLogin(usuario.getLogin());
+		Optional<Usuario> user = usuarioRepository.findByLogin(usuario.getLogin());
+		Usuario usuarioExist = user.get();
 		if (usuarioExist != null) {
 			return usuarioExist;
 		}
@@ -61,18 +64,18 @@ public class UsuarioService {
 	}
 
 	public Usuario updateUsuario(String login, Usuario usuario) {
-		Usuario usuarioExist = usuarioRepository.findByLogin(login);
-		Usuario usuarioLoginExist = usuarioRepository.findByLogin(usuario.getLogin());
+		Optional<Usuario> usuarioExist = usuarioRepository.findByLogin(login);
+		Optional<Usuario> usuarioLoginExist = usuarioRepository.findByLogin(usuario.getLogin());
 		if (usuarioExist == null) {
 			// TODO return Response
 			return null;
 		}
-		if((usuarioLoginExist != null) && usuarioExist.getLogin() != usuarioLoginExist.getLogin()) {
+		if((usuarioLoginExist != null) && usuarioExist.get().getLogin() != usuarioLoginExist.get().getLogin()) {
 			// TODO return Response
 			return null;
 		}
 
-		usuario.setLogin(usuarioExist.getLogin());
+		usuario.setLogin(usuarioExist.get().getLogin());
 		usuario = usuarioRepository.save(usuario);
 		usuario = hiddenPassword(usuario);
 		return usuario;

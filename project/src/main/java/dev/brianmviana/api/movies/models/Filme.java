@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +43,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private Boolean status;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<Voto> votos;
 	
 	public Long getId() {
