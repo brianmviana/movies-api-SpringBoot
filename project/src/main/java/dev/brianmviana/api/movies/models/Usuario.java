@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -45,6 +46,9 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 	        joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "login"), 
         	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))
 	private List<Role> roles;
+	
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private List<Voto> votos;
 
 	public String getLogin() {
 		return login;

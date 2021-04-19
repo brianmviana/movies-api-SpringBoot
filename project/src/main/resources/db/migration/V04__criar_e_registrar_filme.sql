@@ -14,7 +14,7 @@ CREATE TABLE atores (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE filme_atores (
+CREATE TABLE filmes_atores (
   filme_id bigint NOT NULL,
   ator_id bigint NOT NULL,
   KEY filme_key (`filme_id`),
@@ -33,12 +33,12 @@ INSERT INTO atores(id, nome_ator) values (3, 'Terrence Howard');
 INSERT INTO atores(id, nome_ator) values (4, 'Mickey Rourke');
 INSERT INTO atores(id, nome_ator) values (5, 'Guy Pearce');
 
-INSERT INTO filme_atores(filme_id, ator_id) values (1, 1);
-INSERT INTO filme_atores(filme_id, ator_id) values (1, 2);
-INSERT INTO filme_atores(filme_id, ator_id) values (1, 3);
-INSERT INTO filme_atores(filme_id, ator_id) values (2, 1);
-INSERT INTO filme_atores(filme_id, ator_id) values (2, 2);
-INSERT INTO filme_atores(filme_id, ator_id) values (2, 4);
-INSERT INTO filme_atores(filme_id, ator_id) values (3, 1);
-INSERT INTO filme_atores(filme_id, ator_id) values (3, 2);
-INSERT INTO filme_atores(filme_id, ator_id) values (3, 5);
+INSERT INTO filmes_atores(filme_id, ator_id) values (1, 1);
+INSERT INTO filmes_atores(filme_id, ator_id) values (1, 2);
+INSERT INTO filmes_atores(filme_id, ator_id) values (1, 3);
+INSERT INTO filmes_atores(filme_id, ator_id) values (2, 1);
+INSERT INTO filmes_atores(filme_id, ator_id) values (2, 2);
+INSERT INTO filmes_atores(filme_id, ator_id) values (2, 4);
+INSERT INTO filmes_atores(filme_id, ator_id) values (3, 1);
+INSERT INTO filmes_atores(filme_id, ator_id) values (3, 2);
+INSERT INTO filmes_atores(filme_id, ator_id) values (3, 5);

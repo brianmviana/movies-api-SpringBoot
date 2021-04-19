@@ -42,7 +42,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( 
-	        name = "filme_ator", 
+	        name = "filmes_atores", 
 	        joinColumns = @JoinColumn(name = "filme_id", referencedColumnName = "id"), 
         	inverseJoinColumns = @JoinColumn(name = "ator_id", referencedColumnName = "id"))
 	private List<Atores> atores;
@@ -50,7 +50,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private Boolean status;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "filme", fetch = FetchType.LAZY)
 	private List<Voto> votos;
 	
 	public Long getId() {

@@ -5,15 +5,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-public class Voto {
-
+public class Voto{
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,14 +23,16 @@ public class Voto {
 	@NotNull
 	private Integer nota;
 
-//	@NotNull
-//	@OneToOne(fetch = FetchType.LAZY)
-//	private Usuario usuario;
+	@NotNull
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "filme_id")
 	private Filme filme;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,13 +49,13 @@ public class Voto {
 		this.nota = nota;
 	}
 
-//	public Usuario getUsuario() {
-//		return usuario;
-//	}
-//
-//	public void setUsuario(Usuario usuario) {
-//		this.usuario = usuario;
-//	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Filme getFilme() {
 		return filme;
