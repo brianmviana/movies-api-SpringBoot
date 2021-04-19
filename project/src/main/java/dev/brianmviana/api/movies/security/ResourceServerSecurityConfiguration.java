@@ -16,7 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-//@EnableAuthorizationServer
 @EnableResourceServer
 public class ResourceServerSecurityConfiguration extends ResourceServerConfigurerAdapter{
 	
