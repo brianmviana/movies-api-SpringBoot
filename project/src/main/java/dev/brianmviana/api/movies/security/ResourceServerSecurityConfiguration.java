@@ -29,9 +29,22 @@ public class ResourceServerSecurityConfiguration extends ResourceServerConfigure
 	@Autowired
 	private ImplementsUserDetailsService userDetailsService;
 		
+	
+	 private static final String[] AUTH_WHITELIST = {
+	            // -- Swagger UI v2
+	            "/v2/api-docs",
+	            "/swagger-resources",
+	            "/swagger-resources/**",
+	            "/configuration/ui",
+	            "/configuration/security",
+	            "/swagger-ui.html",
+	            "/webjars/**",
+	    };
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable().authorizeRequests()
+		.antMatchers(AUTH_WHITELIST).permitAll()
 		.antMatchers(HttpMethod.GET, "/filmes").permitAll()
 		//.antMatchers(HttpMethod.GET, "/filmes").hasRole("ADMIN")
 		.antMatchers(HttpMethod.POST, "/filmes").hasRole("ADMIN")
