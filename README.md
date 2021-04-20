@@ -2,7 +2,7 @@
 
 ## 🚨 Requisitos
 
-- Banco de dados _MySQL_ instalado maquina
+- Banco de dados _MySQL_
 
 ## 🏗 O que foi desenvolvido?
 
