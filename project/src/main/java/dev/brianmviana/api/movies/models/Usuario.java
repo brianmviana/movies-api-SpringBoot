@@ -21,7 +21,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({	
+			"hibernateLazyInitializer", 
+			"handler", 
+			"authorities", 
+			"enabled",
+			"accountNonExpired", 
+			"credentialsNonExpired", 
+			"accountNonLocked",
+			"username", //UserDatails
+			"password" //UserDatails
+		})
 @Entity
 public class Usuario extends RepresentationModel<Usuario> implements UserDetails, Comparator<Usuario> {
 
@@ -40,6 +50,7 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 	@NotNull
 	private Boolean status;
 	
+	@JsonIgnoreProperties({ "usuarios", "authority", "authorities" })
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( 
 	        name = "usuarios_roles", 
@@ -47,6 +58,7 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
         	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "nomeRole"))
 	private List<Role> roles;
 	
+	@JsonIgnoreProperties({ "filmes", "usuarios", "id" })
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private List<Voto> votos;
 

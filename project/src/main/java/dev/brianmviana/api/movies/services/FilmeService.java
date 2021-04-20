@@ -1,12 +1,14 @@
 package dev.brianmviana.api.movies.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Filme;
@@ -19,11 +21,12 @@ public class FilmeService {
 	@Autowired
 	private FilmeRepository filmeRepository;
 
+
 	public List<Filme> getAllFilmes(){
 		List<Filme> filmeslist = filmeRepository.findAll();
 		ArrayList<Filme> filmes = new ArrayList<Filme>();
 		for (Filme filme : filmeslist) {
-			filme.add(linkTo(methodOn(FilmeResource.class).getFilme(filme.getId())).withSelfRel());
+			filme.add(linkTo(methodOn(FilmeResource.class).buscarFilme(filme.getId())).withSelfRel());
 			filmes.add(filme);
 		}
 		
@@ -34,7 +37,10 @@ public class FilmeService {
 	
 	public Filme getFilmeById(Long id) {
 		Filme filme = filmeRepository.getOne(id);
-		filme.add(linkTo(methodOn(FilmeResource.class).getAllFilme()).withRel("Lista de Filmes"));
+		if(filme == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		filme.add(linkTo(methodOn(FilmeResource.class).listarTodos()).withRel("Lista de Filmes"));
 		return filme;
 	}
 	
@@ -42,16 +48,22 @@ public class FilmeService {
 		List<Filme> filmeExist = filmeRepository.findByNome(filme.getNome());
 		if (!filmeExist.isEmpty()) {
 			filme = filmeExist.get(0);
-		}
+		}		
 		filmeRepository.save(filme);
-		filme.add(linkTo(methodOn(FilmeResource.class).getAllFilme()).withRel("Lista de Filmes"));
+		filme.add(linkTo(methodOn(FilmeResource.class).listarTodos()).withRel("Lista de Filmes"));
 		return filme;
 	}
 	
-	public Filme deleteFilme(Filme filme) {
+	public void deleteFilme(Long id) {
+		Filme filme = filmeRepository.getOne(id);
 		filme.setStatus(false);
 		filmeRepository.save(filme);
-		return filme;
+	}
+	
+	public Filme updateFilme(Long id, Filme filme) {
+		Filme filmeSaved = getFilmeById(id);
+		BeanUtils.copyProperties(filme, filmeSaved, "id");
+		return filmeRepository.save(filmeSaved);
 	}
 	
 }

@@ -1,15 +1,17 @@
 package dev.brianmviana.api.movies.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Usuario;
 import dev.brianmviana.api.movies.repositories.UsuarioRepository;
+import dev.brianmviana.api.movies.resouces.UsuarioResource;
 
 @Service
 public class UsuarioService {
@@ -20,9 +22,12 @@ public class UsuarioService {
 	public List<Usuario> getAllUsuarios(){
 		Iterable<Usuario> usuarios = usuarioRepository.findAll();
 		List<Usuario> usuariosAtivos = new ArrayList<Usuario>();
+		
 		for (Usuario usuario : usuarios) {
-			if(usuario.getStatus()) { //TODO usuario is Admin()
-				usuario = hiddenPassword(usuario);
+			boolean isAdmin = usuario.getRoles().stream().filter(role -> ("ROLE_ADMIN").equals(role.getNomeRole())).findAny().orElse(null) != null;
+			if(usuario.getStatus() && !isAdmin) {
+				hiddenPassword(usuario);
+				usuario.add(linkTo(methodOn(UsuarioResource.class).getUsuario(usuario.getLogin())).withSelfRel());
 				usuariosAtivos.add(usuario);
 			}
 		}
@@ -31,66 +36,64 @@ public class UsuarioService {
 		return usuariosAtivos;
 	}
 	
-	public ResponseEntity<Usuario> getUsuarioByLogin(String login) {
-		Optional<Usuario> user = usuarioRepository.findByLogin(login);
-		Usuario usuario = user.get();
-		if(usuario != null && usuario.getStatus()) {
-			usuario = hiddenPassword(usuario);
-			return ResponseEntity.ok(usuario);
-		} else {
-			return ResponseEntity.notFound().build();			
-		}
+	public Usuario getUsuarioByLogin(String login) {
+		Usuario usuario = usuarioRepository.findByLogin(login);
+		if(usuario != null) {
+			if(usuario.getStatus()) {
+				hiddenPassword(usuario);
+				usuario.add(linkTo(methodOn(UsuarioResource.class).listarTodosUsuariosAtivos()).withRel("Lista de Usuarios ativos"));
+				return usuario;				
+			}
+		} 
+		return null;
 	}
 	
 	public Usuario saveUsuario(Usuario usuario) {
-		Optional<Usuario> user = usuarioRepository.findByLogin(usuario.getLogin());
-		Usuario usuarioExist = user.get();
+		Usuario usuarioExist = usuarioRepository.findByLogin(usuario.getLogin());
+		
 		if (usuarioExist != null) {
 			return usuarioExist;
 		}
 		
-		// cria uma lista vazia caso o usuario não tenha nenhum voto
-//		if(usuario.getVotos() == null) {
-//			usuario.setVotos(new HashSet<Voto>());
-//		}
 		usuario = usuarioRepository.save(usuario);
-		usuario = hiddenPassword(usuario);
+		hiddenPassword(usuario);
 		return usuario;
 	}
 	
 	
 	public Usuario updateUsuario(Usuario usuario) {
+		// TODO Verificar o usuario atual logado
 		return updateUsuario(usuario.getLogin(), usuario);
 	}
 
 	public Usuario updateUsuario(String login, Usuario usuario) {
-		Optional<Usuario> usuarioExist = usuarioRepository.findByLogin(login);
-		Optional<Usuario> usuarioLoginExist = usuarioRepository.findByLogin(usuario.getLogin());
+		// TODO Verificar o usuario atual logado
+		Usuario usuarioExist = usuarioRepository.findByLogin(login);
+		Usuario usuarioLoginExist = usuarioRepository.findByLogin(usuario.getLogin());
 		if (usuarioExist == null) {
 			// TODO return Response
 			return null;
 		}
-		if((usuarioLoginExist != null) && usuarioExist.get().getLogin() != usuarioLoginExist.get().getLogin()) {
+		if((usuarioLoginExist != null) && usuarioExist.getLogin() != usuarioLoginExist.getLogin()) {
 			// TODO return Response
 			return null;
 		}
 
-		usuario.setLogin(usuarioExist.get().getLogin());
+		usuario.setLogin(usuarioExist.getLogin());
 		usuario = usuarioRepository.save(usuario);
-		usuario = hiddenPassword(usuario);
-		return usuario;
-	}
-	
-	public Usuario deleteUsuario(Usuario usuario) {
-		usuario.setStatus(false);
-		usuarioRepository.save(usuario);
 		hiddenPassword(usuario);
 		return usuario;
 	}
 	
-	private Usuario hiddenPassword(Usuario user) {
+	public void deleteUsuario(String login) {
+		// TODO Verificar o usuario atual logado
+		Usuario usuario = getUsuarioByLogin(login);
+		usuario.setStatus(false);
+		usuarioRepository.save(usuario);
+	}
+	
+	private void hiddenPassword(Usuario user) {
 		user.setSenha("********");
-		return user;
 	}
 	
 }

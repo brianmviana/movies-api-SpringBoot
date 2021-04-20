@@ -23,11 +23,13 @@ public class Voto{
 	@NotNull
 	private Integer nota;
 
+	@JsonIgnoreProperties({ "votos" })
 	@NotNull
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
+	@JsonIgnoreProperties({ "votos", "atores" })
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "filme_id")

@@ -3,6 +3,7 @@
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -28,6 +30,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	private Long id;
 	
 	@NotNull
+	@Size(min = 1, max = 30)
 	private String nome;
 	
 	@NotNull
@@ -39,8 +42,9 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private String ano;
 	
+	@JsonIgnoreProperties({ "atores", "filmes", "id" })
 	@NotNull
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable( 
 	        name = "filmes_atores", 
 	        joinColumns = @JoinColumn(name = "filme_id", referencedColumnName = "id"), 
@@ -50,6 +54,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private Boolean status;
 	
+	@JsonIgnoreProperties({ "usuarios", "atores", "votos" })
 	@OneToMany(mappedBy = "filme", fetch = FetchType.LAZY)
 	private List<Voto> votos;
 	
