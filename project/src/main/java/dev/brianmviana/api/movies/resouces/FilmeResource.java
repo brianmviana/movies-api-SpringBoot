@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.brianmviana.api.movies.events.ResourceCreatedEvent;
 import dev.brianmviana.api.movies.models.Filme;
+import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
 import dev.brianmviana.api.movies.services.FilmeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,12 +40,21 @@ public class FilmeResource {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 		
+//	@ApiOperation(value = "Retorna uma lista de filmes")
+//	@GetMapping(produces = "application/json")
+//	@PreAuthorize("hasAuthority('ROLE_USER')")
+//	public @ResponseBody List<Filme> listar() {
+//		return filmeService.getAllFilmes(); //!filmes.isEmpty() ? ResponseEntity.ok(filmes) : ResponseEntity.noContent().build();
+//	}
+
 	@ApiOperation(value = "Retorna uma lista de filmes")
 	@GetMapping(produces = "application/json")
 	@PreAuthorize("hasAuthority('ROLE_USER')")
-	public @ResponseBody List<Filme> listarTodos() {
-		return filmeService.getAllFilmes(); //!filmes.isEmpty() ? ResponseEntity.ok(filmes) : ResponseEntity.noContent().build();
+	public @ResponseBody Page<Filme> pesquisar(FilmeFilter filmeFilter, Pageable pageable) {
+		return filmeService.pesquisar(filmeFilter, pageable); //!filmes.isEmpty() ? ResponseEntity.ok(filmes) : ResponseEntity.noContent().build();
 	}
+	
+	
 	
 	@ApiOperation(value = "Retorna um filme")
 	@GetMapping(value = "/{id}", produces = "application/json")

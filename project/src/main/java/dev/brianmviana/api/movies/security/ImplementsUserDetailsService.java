@@ -1,8 +1,7 @@
 package dev.brianmviana.api.movies.security;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

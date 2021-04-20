@@ -54,7 +54,7 @@ public class Filme extends RepresentationModel<Filme> implements Comparator<Film
 	@NotNull
 	private Boolean status;
 	
-	@JsonIgnoreProperties({ "usuarios", "atores", "votos" })
+	@JsonIgnoreProperties({ "usuarios", "atores", "votos", "filme" })
 	@OneToMany(mappedBy = "filme", fetch = FetchType.LAZY)
 	private List<Voto> votos;
 	

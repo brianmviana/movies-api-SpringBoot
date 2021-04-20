@@ -3,7 +3,6 @@ package dev.brianmviana.api.movies.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Filme;

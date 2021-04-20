@@ -9,10 +9,14 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Filme;
 import dev.brianmviana.api.movies.repositories.FilmeRepository;
+import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
 import dev.brianmviana.api.movies.resouces.FilmeResource;
 
 @Service
@@ -22,25 +26,39 @@ public class FilmeService {
 	private FilmeRepository filmeRepository;
 
 
-	public List<Filme> getAllFilmes(){
-		List<Filme> filmeslist = filmeRepository.findAll();
-		ArrayList<Filme> filmes = new ArrayList<Filme>();
-		for (Filme filme : filmeslist) {
+//	public List<Filme> getAllFilmes(){
+//		List<Filme> filmeslist = filmeRepository.findAll();
+//		ArrayList<Filme> filmes = new ArrayList<Filme>();
+//		for (Filme filme : filmeslist) {
+//			filme.add(linkTo(methodOn(FilmeResource.class).buscarFilme(filme.getId())).withSelfRel());
+//			filmes.add(filme);
+//		}
+//		
+//		filmes.sort(new Filme());
+//
+//		return filmes;
+//	}
+	
+	public Page<Filme> pesquisar(FilmeFilter filmeFilter, Pageable pageable){
+		Page<Filme> filmeslist = filmeRepository.filtrar(filmeFilter, pageable);
+//		ArrayList<Filme> filmes = new ArrayList<Filme>();
+		for (Filme filme : filmeslist.getContent()) {
 			filme.add(linkTo(methodOn(FilmeResource.class).buscarFilme(filme.getId())).withSelfRel());
-			filmes.add(filme);
+//			filmes.add(filme);
 		}
 		
-		filmes.sort(new Filme());
-
-		return filmes;
+//		filmes.sort(new Filme());
+		//filmeslist.getContent().sort(new Filme());
+		return filmeslist;
 	}
 	
+
 	public Filme getFilmeById(Long id) {
 		Filme filme = filmeRepository.getOne(id);
 		if(filme == null) {
 			throw new EmptyResultDataAccessException(1);
 		}
-		filme.add(linkTo(methodOn(FilmeResource.class).listarTodos()).withRel("Lista de Filmes"));
+		filme.add(linkTo(methodOn(FilmeResource.class).pesquisar(new FilmeFilter(), null)).withRel("Lista de Filmes"));
 		return filme;
 	}
 	
@@ -50,7 +68,7 @@ public class FilmeService {
 			filme = filmeExist.get(0);
 		}		
 		filmeRepository.save(filme);
-		filme.add(linkTo(methodOn(FilmeResource.class).listarTodos()).withRel("Lista de Filmes"));
+		filme.add(linkTo(methodOn(FilmeResource.class).pesquisar(new FilmeFilter(), null)).withRel("Lista de Filmes"));
 		return filme;
 	}
 	
