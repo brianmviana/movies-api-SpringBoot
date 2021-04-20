@@ -10,14 +10,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.websocket.ClientEndpointConfig.Builder;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.ObjectUtils;
 
-import dev.brianmviana.api.movies.models.Atores;
 import dev.brianmviana.api.movies.models.Filme;
 import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
 
