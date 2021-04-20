@@ -101,6 +101,14 @@ public class Usuario extends RepresentationModel<Usuario> implements UserDetails
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	
+	public List<Voto> getVotos() {
+		return votos;
+	}
+
+	public void setVotos(List<Voto> votos) {
+		this.votos = votos;
+	}
 
 	@Override
 	public int hashCode() {

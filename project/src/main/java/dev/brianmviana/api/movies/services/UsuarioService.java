@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Usuario;
@@ -38,6 +39,7 @@ public class UsuarioService {
 	
 	public Usuario getUsuarioByLogin(String login) {
 		Usuario usuario = usuarioRepository.findByLogin(login);
+		
 		if(usuario != null) {
 			if(usuario.getStatus()) {
 				hiddenPassword(usuario);
@@ -45,7 +47,7 @@ public class UsuarioService {
 				return usuario;				
 			}
 		} 
-		return null;
+		throw new EmptyResultDataAccessException(1);
 	}
 	
 	public Usuario saveUsuario(Usuario usuario) {

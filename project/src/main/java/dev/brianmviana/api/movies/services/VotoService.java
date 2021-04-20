@@ -3,13 +3,13 @@ package dev.brianmviana.api.movies.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Filme;
 import dev.brianmviana.api.movies.models.Usuario;
 import dev.brianmviana.api.movies.models.Voto;
-import dev.brianmviana.api.movies.repositories.FilmeRepository;
-import dev.brianmviana.api.movies.repositories.UsuarioRepository;
+import dev.brianmviana.api.movies.models.utils.VotoRequest;
 import dev.brianmviana.api.movies.repositories.VotoRepository;
 
 @Service
@@ -19,23 +19,20 @@ public class VotoService {
 	private VotoRepository votoRepository;
 
 	@Autowired
-	private FilmeRepository filmeRepository;
+	private FilmeService filmeService;
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-
-	public List<Voto> getAllVotos(){
-		List<Voto> votoslist = votoRepository.findAll();
-		return votoslist;
+	private UsuarioService usuarioService;
+	
+	public List<Voto> getVotosByFilme(Long id){
+		Filme filme = filmeService.getFilmeById(id);
+		return filme.getVotos();
 	}
 	
-	public Voto votar(Voto voto) {
-		Filme filme = filmeRepository.getOne(voto.getFilme().getId());
-//		Usuario usuario = usuarioRepository.findByLogin(voto.getUsuario().getLogin());
-//		if (isDuplicatedVoto(filme, usuario)) {
-//			return updateNota(voto.getNota(), voto.getId());
-//		}
-		return votar(voto.getNota(), filme);
+
+	public List<Voto> getVotosByUsuario(String login) {
+		Usuario usuario = usuarioService.getUsuarioByLogin(login);
+		return usuario.getVotos();
 	}
 	
 //	public boolean isDuplicatedVoto(Filme filme, Usuario usuario) {
@@ -48,12 +45,17 @@ public class VotoService {
 //		return false;
 //	}
 
-	public Voto votar(Integer nota, Filme filme) {
-		if (notaIsValid(nota)) {
+	public Voto votar(Long idFilme, VotoRequest votoRequest) {
+		if (notaIsValid(votoRequest.getNota())) {
+		
+			Filme filme = filmeService.getFilmeById(idFilme);
+			Usuario usuario = usuarioService.getUsuarioByLogin(votoRequest.getLogin());
 			Voto voto = new Voto();
-			voto.setNota(nota);
+			
+			voto.setNota(votoRequest.getNota());
 			voto.setFilme(filme);
-			//voto.setUsuario(usuario);
+			voto.setUsuario(usuario);
+
 			return votoRepository.save(voto);
 		}
 		return null;
@@ -70,7 +72,6 @@ public class VotoService {
 			return true;
 		}
 		return false;
-	}
-	
+	}	
 	
 }
