@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Filme;
 import dev.brianmviana.api.movies.repositories.FilmeRepository;
-import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
+import dev.brianmviana.api.movies.repositories.filters.FilmeFilter;
 import dev.brianmviana.api.movies.resouces.FilmeResource;
 
 @Service
@@ -22,20 +22,6 @@ public class FilmeService {
 
 	@Autowired
 	private FilmeRepository filmeRepository;
-
-
-//	public List<Filme> getAllFilmes(){
-//		List<Filme> filmeslist = filmeRepository.findAll();
-//		ArrayList<Filme> filmes = new ArrayList<Filme>();
-//		for (Filme filme : filmeslist) {
-//			filme.add(linkTo(methodOn(FilmeResource.class).buscarFilme(filme.getId())).withSelfRel());
-//			filmes.add(filme);
-//		}
-//		
-//		filmes.sort(new Filme());
-//
-//		return filmes;
-//	}
 	
 	public Page<Filme> pesquisar(FilmeFilter filmeFilter, Pageable pageable){
 		Page<Filme> filmeslist = filmeRepository.filtrar(filmeFilter, pageable);
@@ -64,7 +50,7 @@ public class FilmeService {
 		List<Filme> filmeExist = filmeRepository.findByNome(filme.getNome());
 		if (!filmeExist.isEmpty()) {
 			filme = filmeExist.get(0);
-		}		
+		}
 		filmeRepository.save(filme);
 		filme.add(linkTo(methodOn(FilmeResource.class).pesquisar(new FilmeFilter(), null)).withRel("Lista de Filmes"));
 		return filme;

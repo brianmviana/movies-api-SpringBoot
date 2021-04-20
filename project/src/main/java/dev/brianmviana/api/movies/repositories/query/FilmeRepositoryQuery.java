@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import dev.brianmviana.api.movies.models.Filme;
-import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
+import dev.brianmviana.api.movies.repositories.filters.FilmeFilter;
 
 public interface FilmeRepositoryQuery {
 

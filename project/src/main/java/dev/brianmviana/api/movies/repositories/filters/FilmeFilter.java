@@ -1,8 +1,4 @@
-package dev.brianmviana.api.movies.repositories.filter;
-
-import java.util.List;
-
-import dev.brianmviana.api.movies.models.Atores;
+package dev.brianmviana.api.movies.repositories.filters;
 
 public class FilmeFilter {
 

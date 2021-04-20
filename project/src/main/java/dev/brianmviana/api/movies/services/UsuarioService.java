@@ -3,15 +3,15 @@ package dev.brianmviana.api.movies.services;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import dev.brianmviana.api.movies.models.Usuario;
 import dev.brianmviana.api.movies.repositories.UsuarioRepository;
+import dev.brianmviana.api.movies.repositories.filters.UsuarioFilter;
 import dev.brianmviana.api.movies.resouces.UsuarioResource;
 
 @Service
@@ -20,21 +20,17 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public List<Usuario> getAllUsuarios(){
-		Iterable<Usuario> usuarios = usuarioRepository.findAll();
-		List<Usuario> usuariosAtivos = new ArrayList<Usuario>();
+	public Page<Usuario> pesquisar(UsuarioFilter usuarioFilter, Pageable pageable){
+		Page<Usuario> usuarios = usuarioRepository.filtrar(usuarioFilter, pageable);
 		
 		for (Usuario usuario : usuarios) {
-			boolean isAdmin = usuario.getRoles().stream().filter(role -> ("ROLE_ADMIN").equals(role.getNomeRole())).findAny().orElse(null) != null;
-			if(usuario.getStatus() && !isAdmin) {
-				hiddenPassword(usuario);
-				usuario.add(linkTo(methodOn(UsuarioResource.class).getUsuario(usuario.getLogin())).withSelfRel());
-				usuariosAtivos.add(usuario);
-			}
+			hiddenPassword(usuario);
+			usuario.add(linkTo(methodOn(UsuarioResource.class).burscarPorLogin(usuario.getLogin())).withSelfRel());
+
 		}
 		
-		usuariosAtivos.sort(new Usuario());
-		return usuariosAtivos;
+	//	usuariosAtivos.sort(new Usuario());
+		return usuarios;
 	}
 	
 	public Usuario getUsuarioByLogin(String login) {
@@ -43,7 +39,7 @@ public class UsuarioService {
 		if(usuario != null) {
 			if(usuario.getStatus()) {
 				hiddenPassword(usuario);
-				usuario.add(linkTo(methodOn(UsuarioResource.class).listarTodosUsuariosAtivos()).withRel("Lista de Usuarios ativos"));
+				usuario.add(linkTo(methodOn(UsuarioResource.class).pesquisar(new UsuarioFilter(), null)).withRel("Lista de Usuarios ativos"));
 				return usuario;				
 			}
 		} 

@@ -36,7 +36,7 @@ public class VotoResource {
 	
 	@ApiOperation(value="Retorna uma lista de votos")
 	@GetMapping(path = "/filmes/{id}/votos", produces="application/json")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER') OR hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody ResponseEntity<List<Voto>> getAllVotosByFilme(@PathVariable Long id) {
 		List<Voto> votos = votoService.getVotosByFilme(id);
 		return (votos != null) ? ResponseEntity.ok(votos) : ResponseEntity.notFound().build();
@@ -44,7 +44,7 @@ public class VotoResource {
 	
 	@ApiOperation(value="Retorna uma lista de votos")
 	@GetMapping(path = "/usuarios/{login}/votos", produces="application/json")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER') OR hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody ResponseEntity<List<Voto>> getAllVotosByFilme(@PathVariable String login) {
 		List<Voto> votos = votoService.getVotosByUsuario(login);
 		return (votos != null) ? ResponseEntity.ok(votos) : ResponseEntity.notFound().build();
@@ -53,6 +53,7 @@ public class VotoResource {
 	
 	@ApiOperation(value="Cria um novo voto")
 	@PostMapping(path = "/filmes/{idFilme}/votar")
+	@PreAuthorize("hasAuthority('ROLE_USER') OR hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<Voto> votar(@PathVariable Long idFilme, @RequestBody @Valid VotoRequest votoRequest, HttpServletResponse response) {
 		Voto voto = votoService.votar(idFilme, votoRequest);
 		if (voto != null) {

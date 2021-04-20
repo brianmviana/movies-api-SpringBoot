@@ -1,7 +1,5 @@
 	package dev.brianmviana.api.movies.resouces;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.brianmviana.api.movies.events.ResourceCreatedEvent;
 import dev.brianmviana.api.movies.models.Filme;
-import dev.brianmviana.api.movies.repositories.filter.FilmeFilter;
+import dev.brianmviana.api.movies.repositories.filters.FilmeFilter;
 import dev.brianmviana.api.movies.services.FilmeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,16 +38,9 @@ public class FilmeResource {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 		
-//	@ApiOperation(value = "Retorna uma lista de filmes")
-//	@GetMapping(produces = "application/json")
-//	@PreAuthorize("hasAuthority('ROLE_USER')")
-//	public @ResponseBody List<Filme> listar() {
-//		return filmeService.getAllFilmes(); //!filmes.isEmpty() ? ResponseEntity.ok(filmes) : ResponseEntity.noContent().build();
-//	}
-
 	@ApiOperation(value = "Retorna uma lista de filmes")
 	@GetMapping(produces = "application/json")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER') OR hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody Page<Filme> pesquisar(FilmeFilter filmeFilter, Pageable pageable) {
 		return filmeService.pesquisar(filmeFilter, pageable); //!filmes.isEmpty() ? ResponseEntity.ok(filmes) : ResponseEntity.noContent().build();
 	}
@@ -58,7 +49,7 @@ public class FilmeResource {
 	
 	@ApiOperation(value = "Retorna um filme")
 	@GetMapping(value = "/{id}", produces = "application/json")
-	@PreAuthorize("hasAuthority('ROLE_USER')")
+	@PreAuthorize("hasAuthority('ROLE_USER') OR hasAuthority('ROLE_ADMIN')")
 	public @ResponseBody ResponseEntity<Filme> buscarFilme(@PathVariable(value = "id") Long id) {
 		Filme filme = filmeService.getFilmeById(id);
  		return (filme != null) ? ResponseEntity.ok(filme) : ResponseEntity.notFound().build();
